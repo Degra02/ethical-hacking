@@ -1,0 +1,21 @@
+FROM python:3.8-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the challenge files
+COPY ./src/ /app/
+
+# Copy the requirements file
+COPY ./requirements.txt /app
+
+# Set the flag
+ENV FLAG=UniTN{did_I_forget_to_redact_the_flag_4gain?}
+
+# Install required packages
+RUN apk add --update --no-cache build-base linux-headers && \
+    pip install --no-cache-dir -r requirements.txt && \
+    apk del build-base linux-headers
+
+# Run the challenge script
+CMD ["python", "app.py"]

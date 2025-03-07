@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shoppingfy</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Shoppingfy</a>
+
+        <!-- If logged in -->
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item ">
+                    <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+        
+
+        <!-- If not logged in -->
+        
+    </nav>
+
+    
+    
+    
+
+    <div class="container">
+        <div class="text-center">
+            
+<div class="text-center">
+    <h1 class="mb-4">Shoppingfy</h1>
+    <p class="lead">Shop stress-free from our endless list of fabulous products.</p>
+
+    <div class="alert alert-info" role="alert">
+        Limited time offer: use coupon code GET10 to get $10 off your next purchase!
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Your balance</h5>
+                    <p class="card-text">$<strong>1000000</strong></p>
+
+                    <br>
+
+                    
+                    <h5 class="card-title">Coupon</h5>
+                    <p class="card-text">10</p>
+                    <button type="button" class="btn btn-sm btn-outline-danger" id="remove-coupon">
+                        Remove coupon
+                    </button>
+                    
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4>Do you have a coupon?</h4>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form action="/apply_coupon" method="post">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="coupon" placeholder="Coupon code">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit">Apply</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <h4>Products</h4>
+
+    <div class="row">
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/archlinux.jpg" class="card-img-top" alt="Arch Linux ISO USB stick" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Arch Linux ISO USB stick</h5>
+                    <p class="card-text">I use Arch btw.</p>
+                    <small class="text-muted">2500</small>
+                    <br>
+                    <a href="http://cyberchallenge.disi.unitn.it:7902/buy?id=1" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/crossbow.jpg" class="card-img-top" alt="3D-printed Crossbow" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">3D-printed Crossbow</h5>
+                    <p class="card-text">Because the best defence is attack.</p>
+                    <small class="text-muted">500</small>
+                    <br>
+                    <a href="/buy?id=2" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/coffeekey.jpg" class="card-img-top" alt="Useless Coffee Key" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Useless Coffee Key</h5>
+                    <p class="card-text">For your toughest days in the university.</p>
+                    <small class="text-muted">1000</small>
+                    <br>
+                    <a href="/buy?id=3" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/palm.jpg" class="card-img-top" alt="Palm" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Palm</h5>
+                    <p class="card-text">Some believe it is the most beautiful plant in the world. I can only agree.</p>
+                    <small class="text-muted">1000000</small>
+                    <br>
+                    <a href="/buy?id=4" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/thesis.jpg" class="card-img-top" alt="Carlo&#39;s Thesis" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Carlo&#39;s Thesis</h5>
+                    <p class="card-text">It may or may not be more filled with knowledge than the Bible.</p>
+                    <small class="text-muted">20000</small>
+                    <br>
+                    <a href="/buy?id=5" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/duck.jpg" class="card-img-top" alt="Duck" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Duck</h5>
+                    <p class="card-text">A friend that will never betray you.</p>
+                    <small class="text-muted">1000</small>
+                    <br>
+                    <a href="/buy?id=6" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/bag.jpg" class="card-img-top" alt="UniTN Bag" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">UniTN Bag</h5>
+                    <p class="card-text">Who knows what treasures were carried in this bag.</p>
+                    <small class="text-muted">500</small>
+                    <br>
+                    <a href="/buy?id=7" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/camomilla.jpg" class="card-img-top" alt="Camomilla" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Camomilla</h5>
+                    <p class="card-text">For your toughest evenings.</p>
+                    <small class="text-muted">70</small>
+                    <br>
+                    <a href="/buy?id=8" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/pingpong.jpg" class="card-img-top" alt="Ping-Pong Ball" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Ping-Pong Ball</h5>
+                    <p class="card-text">Wo does not love ping-pong?</p>
+                    <small class="text-muted">100</small>
+                    <br>
+                    <a href="/buy?id=9" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/condiment.jpg" class="card-img-top" alt="Condiment" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">Condiment</h5>
+                    <p class="card-text">Let&#39;s see if the canteen food becomes edible with this.</p>
+                    <small class="text-muted">500</small>
+                    <br>
+                    <a href="/buy?id=10" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <!-- images are in static/images/ -->
+                <img src="/static/images/phonestand.jpg" class="card-img-top" alt="3D-printed phone stand" style="height: 225px; object-fit: cover;">
+                <div class="card-body">
+                    <h5 class="card-title">3D-printed phone stand</h5>
+                    <p class="card-text">Carlo thought this was a good idea.</p>
+                    <small class="text-muted">150</small>
+                    <br>
+                    <a href="/buy?id=11" class="btn btn-sm btn-outline-primary">One-click
+                        buy</a>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        document.getElementById('remove-coupon').addEventListener('click', function () {
+            fetch('/remove_coupon', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }).then(function (response) {
+                if (response.ok) {
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+
+    
+        </div>
+    </div>
+</body>
+
+</html>

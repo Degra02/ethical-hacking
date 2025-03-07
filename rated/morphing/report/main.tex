@@ -1,0 +1,139 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                DO NOT EDIT                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper, 11pt]{article}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\geometry{a4paper}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage[pdftex,bookmarks,colorlinks,breaklinks]{hyperref}
+\usepackage{memhfixc}
+\usepackage{pdfsync}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=codestyle}
+\pagestyle{fancy}
+\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DO NOT EDIT the structure of the document and stick to the provided template!
+% The report must be in English and PDF format. Do not send files other than the report.
+% It must be at most 1 page long, not counting images, code and references.
+% Images and code should be included in the report only if they add useful information.
+% A person reading the report should be able to understand the vulnerability and exploit it without looking for further information.
+
+\title{Morphing Code Mystery}
+\author{Filippo De Grandi}
+\date{13/04/2025}
+
+\makeatletter
+\lhead{\@author,\space\@date}
+\rhead{\@title}
+\lfoot{Ethical Hacking 2024/25}
+\rfoot{University of Trento}
+
+\begin{document}
+
+\section*{Background}
+% Briefly introduce the background on the challenge topic. Describe the class of the vulnerability that affects the target system, why it happens, and its consequences. You might also describe how the vulnerability can be prevented. In this section, you should not describe the challenge details.
+% The background section should be well referenced \cite{bibtex}.
+
+% The challenge is a reverse engineering exercise that focuses on retrieving the flag from an ELF binary file \cite{elf}.
+%
+% Binary reverse engineering \cite{rev_eng} is the process of analyzing compiled software to understand how it functions without access to its source code.
+% By examining the binary code, analysts can deduce the underlying algorithms, identify vulnerabilities, and repurpose or modify the software. This technique is essential for security assessments, malware analysis, and gathering insights into proprietary systems.
+%
+% While complete prevention of reverse engineering is impossible, several techniques can complicate the process for attackers. One common approach is stripping, which removes symbols such as function names and global variable names, obscuring the code's intent \cite{stripping}.
+%
+% Another method involves anti-disassembly techniques, where specific bytes are inserted to exploit limitations in disassemblers (e.g., Ghidra). This manipulation can mislead analysis tools without affecting the program's execution \cite{anti_disass}.
+%
+% Additional methods include code packing, which compresses or encrypts the code to make analysis more difficult \cite{packing}, and virtual machine obfuscation, where the code is transformed into a format that runs on a custom virtual machine \cite{vm_obf}.
+
+
+Reverse Engineering \cite{rev_eng} is the process of analyzing a system to identify its components and their relationships, often with the goal of understanding how it works without having access to its source code or design documentation. In the context of binary executables, this typically involves inspecting compiled code to recover high-level logic, using tools like disassemblers, debuggers, and decompilers.
+
+In real-world applications, reverse engineering has several legitimate uses, including malware analysis, vulnerability research, compatibility checks, and legacy software maintenance. However, it can also be misused for malicious purposes like software cracking or intellectual property theft, which is why many binaries attempt to hide or obfuscate their logic.
+
+A particularly effective technique used both in malware and commercial software protection is self-modifying code \cite{smc}. Instead of executing a static sequence of instructions laid out in the file, a self-modifying program alters its own code segment at runtime by writing new bytes into memory, decrypting sections on the fly, or patching jump targets. This layer of indirection can:
+
+\begin{itemize}
+  \item Tamper static analysis: Disassemblers see only the encrypted or uninitialized bytes, so the true logic remains concealed until execution.
+  \item Detect tampering: If a watchpoint or breakpoint disrupts the timing or integrity of self-modification, the program can crash or take alternative (often misleading) paths.
+  \item Implement polymorphism: Each run can decrypt or re-encrypt itself differently, making signature-based detection (e.g., by antivirus) far more difficult.
+\end{itemize}
+
+Another common anti-analysis measure is ptrace-based anti-tracing. On Unix-like systems, ptrace is the kernel utility that allows one process (a debugger) to observe and control another \cite{ptrace}. Programs can abuse ptrace to detect if they are being debugged by programs like gdb \cite{gdb} or strace \cite{strace}.
+
+
+
+\section*{Reversing}
+
+The binary appears to implement a form of self-modifying code. A non-standard section named \texttt{mysec} contains code that plays a central role in the program’s behavior, but it's initially obfuscated, since it is composed of useless or bad instructions.
+
+During dynamic analysis with \texttt{gdb}, memory watchpoints were set on \texttt{mysec}, revealing that it was frequently modified at runtime, supporting the hypothesis of self-modifying behavior. The program also exhibited different crash signals (SIGILL or SIGSEGV) when incorrect inputs were provided (caused by the bad instructions that are executed if a wrong input is inserted), suggesting that the correctness of the input influences the execution path and potentially decrypts the code progressively.
+Moreover, a decryptor function that performs a xor over the \texttt{mysec} section is present in the code, and is invoked with the value 0x42, which appears to be part of an initialization routine. After decryption, different parts of the code in \texttt{mysec} become readable and contain logic that compares user input against hardcoded values.
+
+
+\section*{Dynamic Solution}
+Since the challenge is called \textit{Morphing Code Mystery}, it most likely had something to do with self-modifying code. Firstly, I checked the sections in the binary with \texttt{readelf -S ./bin} and saw \texttt{mysec}, which is not a default one, with offset \texttt{0x12a8}.
+After setting a breakpoint for memory changes at \texttt{mysec} with \texttt{watch*(int*)\$mysec}, when executing the program the breakpoint was hit multiple times, confirming the suspicion of self-modifying code \footnote{In order to trace the program I patched it with ghidra by removing the call to \texttt{ptrace}. With \texttt{LD\_PRELOAD} it was hanging on gdb (still have to find out why).}.
+When inserting a string as input for the program, it either went into a \texttt{SIGILL} or \texttt{SIGSEGV} exception, thus I created a gdb script to dump the contents of the disassembly of \texttt{mysec} to a file after each exception [Listing \ref{lst:setup}].
+
+I got the values of the base address in memory with \texttt{info proc mappings} in gdb, and calculated the address of \texttt{mysec} with \texttt{\$base + 0x12a8}.
+By executing \texttt{gdb -x ./setup.gdb} the script in Listsing \ref{lst:setup} is used. Once inside the \texttt{gdb} shell, run the program that will ask for the flag. After inserting a string, the program will go into an exception, and the dumped disassembly will be found in \texttt{last-char.txt}.
+
+By analyzing the assembly instructions, some \texttt{cmp} comparisons are made. In particular, in Listing \ref{lst:asm}, the \texttt{cmp al,<hex>} is the instruction that compares the input with some hardcoded hex value. If the values are the same, a call to a function is made, that is excatly the \texttt{\$decryptor} function which performs \texttt{xor} operation on the whole \texttt{mysec} section.
+
+To find the flag, simply \texttt{run} inside gdb with a string that contains the hex values found in each disassembly dump of the \texttt{cmp al,<hex>} instruction.
+
+
+\section*{Static Solution}
+% Describe the solution of the challenge and the exploit.
+% You can include snippets of code, such as in Listing \ref{lst:example}
+
+After disassembling the binary with ghidra, I found the \texttt{main} function via \texttt{\_\_libc\_start\_main}.
+Here, a \texttt{scanf} gets the user input and passes it to a function, that resides in the \texttt{mysec} section.
+Moreover, by looking at all the functions found by ghidra (accessible via Window $\rightarrow$ Functions), the \texttt{\$decryptor} function can be found, which performs a \texttt{xor} operation of the whole \texttt{mysec} section with a byte value given as input. Via the \texttt{References} in ghidra, I saw that this is called in an initializer function with the byte \texttt{0x42}.
+
+To solve the challenge, I selected the whole \texttt{mysec} section, xored it with \texttt{0x42} and analyzed the disassembly of the section.
+After this first xor, a \texttt{call} to the \texttt{decryptor} function is made some instructions after a comparison with the \texttt{al} register. In particular, after xoring with \texttt{0x42}, the first comparison that is made is with the byte \texttt{0x55} which is the \texttt{U} letter, hinting at the first character of the flag.
+
+I then iteratively xored the \texttt{mysec} section with the bytes found in \texttt{cmp al,<hex>}, disassembled the new xored section and searched for the new hex value, corresponding to a byte of the flag. This solution is also found in Listing \ref{lst:solution}.
+
+
+
+\lstinputlisting[language=bash,label=lst:setup,caption=GDB setup]{setup.gdb}
+\lstinputlisting[label=lst:asm,caption=Disassembly dump]{dump.asm}
+\lstinputlisting[language=python,label=lst:solution,caption=Solution code]{solution.py}
+
+\bibliographystyle{abbrv}
+\bibliography{references}  % need to put bibtex references in references.bib
+\end{document}

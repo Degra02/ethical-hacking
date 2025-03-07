@@ -1,0 +1,116 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                DO NOT EDIT                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper, 11pt]{article}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\geometry{a4paper}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage[pdftex,bookmarks,colorlinks,breaklinks]{hyperref}
+\usepackage{memhfixc}
+\usepackage{pdfsync}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=codestyle}
+\pagestyle{fancy}
+\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DO NOT EDIT the structure of the document and stick to the provided template!
+% The report must be in English and PDF format. Do not send files other than the report.
+% It must be at most 1 page long, not counting images, code and references.
+% Images and code should be included in the report only if they add useful information.
+% A person reading the report should be able to understand the vulnerability and exploit it without looking for further information.
+
+\title{ROP 5}
+\author{Filippo De Grandi}
+\date{16/05/2025}
+
+\makeatletter
+\lhead{\@author,\space\@date}
+\rhead{\@title}
+\lfoot{Ethical Hacking 2024/25}
+\rfoot{University of Trento}
+
+\begin{document}
+
+\section*{Background}
+% Briefly introduce the background on the challenge topic. Describe the class of the vulnerability that affects the target system, why it happens, and its consequences. You might also describe how the vulnerability can be prevented. In this section, you should not describe the challenge details.
+% The background section should be well referenced \cite{bibtex}.
+Return-Oriented Programming (ROP) \cite{rop} is an exploitation technique that allows an attacker to execute arbitrary code in the presence of security mechanisms such as non-executable memory (\texttt{NX}) \cite{nx}.
+ROP relies on chaining together small sequences of instructions, called \textit{gadgets}, that already exist in the program’s memory (typically within libraries or the binary itself) and end with a \texttt{ret} instruction. These gadgets are used to build a payload that can perform complex operations, such as system calls.
+
+A common class of vulnerabilities that enables ROP attacks is the buffer overflow, particularly stack-based buffer overflows \cite{stack_overflow}.
+These occur when a program writes more data to a buffer located on the stack than it was intended to hold. If the program does not properly validate the length of input data (e.g., using \texttt{gets()} \cite{gets}), it may overwrite the return address of the current function and hijack control flow.
+
+The use of unsafe functions like \texttt{gets()}, which reads input without bounds checking is known to be a serious security flaw. Modern secure coding standards strongly discourage or ban such functions in favor of safer alternatives like \texttt{fgets()} \cite{CERT} \footnote{Unfortunately I have to cite CMU even tho I would prefer not to after the eCTF's smackdown}.
+
+To mitigate buffer overflows and ROP attacks, modern systems implement several defenses, including stack canaries \cite{canaries}, address space layout randomization (ASLR) \cite{aslr}, non-executable stack \cite{nx}, and control-flow integrity (CFI) \cite{cfi}. However, if some of these protections are absent or bypassed, an attacker can still craft a working exploit.
+
+\section*{Vulnerability}
+% Briefly describe the specific instance of the vulnerability that affects the target system.
+The binary is affected by a classic stack-based buffer overflow vulnerability due to the use of the unsafe \texttt{gets()} function. In the main function:
+\begin{lstlisting}[language=c]
+  char input[64];
+  gets(input);
+\end{lstlisting}
+The buffer \texttt{input} is only 64 bytes long, but \texttt{gets()} reads input until a newline is encountered, without checking if the buffer limit has been exceeded. This allows an attacker to overwrite the saved return address on the stack by inputting more than 64 bytes.
+
+There are no stack canaries or other mitigation techniques present, and since the binary has \texttt{NX} enabled but allows code reuse, it is vulnerable to a ROP attack. By controlling the return address, the attacker can execute a carefully constructed ROP chain to perform arbitrary system calls, such as opening and reading a file.
+
+\section*{Solution}
+% Describe the solution of the challenge and the exploit.
+% You can include snippets of code, such as in Listing \ref{lst:example}
+
+The solution involves crafting a ROP chain to:
+
+\begin{itemize}
+  \item Read a filename from the user and store it in the writeable .\texttt{bss} section, found with \texttt{readelf -S bin}.
+  \item Perform the \texttt{open} system call to get a file descriptor.
+  \item Use the \texttt{sendfile} syscall to send the file contents to \texttt{stdout}.
+\end{itemize}
+
+In order to achieve this, the following steps are needed:
+\begin{itemize}
+  \item Calculate the buffer overflow offset (72 bytes).
+  \item Use ROP gadgets like \texttt{pop rdi}, \texttt{pop rsi}, etc. to control registers and system calls. These gadgets can found with \texttt{ropper -f bin} \cite{ropper}
+  \item Invoke \texttt{gets()} to store \texttt{"flag.txt\textbackslash x00"} in writable memory, since \texttt{gets} address is found within the binary.
+  \item Perform the \texttt{open} syscall with the correct arguments.
+  \item Perform the \texttt{sendfile} syscall to dump the file content.
+\end{itemize}
+
+The exploit found in \ref{lst:sol} uses the addresses of each gadget found thanks to \texttt{ropper}. The use of \texttt{gets()} in the binary is central to the vulnerability.
+
+\lstinputlisting[language=python,label=lst:solution,caption=Solution code, label=lst:sol]{solution.py}
+
+\bibliographystyle{abbrv}
+\bibliography{references}  % need to put bibtex references in references.bib
+\end{document}

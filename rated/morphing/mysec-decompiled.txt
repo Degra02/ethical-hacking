@@ -1,0 +1,758 @@
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Instruction at (ram,0x00000071) overlaps instruction at (ram,0x0000006e)
+    */
+/* WARNING: Removing unreachable block (ram,0x00000016) */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+int UndefinedFunction_00000000(undefined *param_1,long param_2,uint param_3)
+
+{
+  uint *puVar1;
+  uint uVar2;
+  undefined uVar3;
+  char cVar4;
+  byte bVar5;
+  uint uVar6;
+  int iVar7;
+  undefined4 uVar8;
+  int *piVar9;
+  uint uVar10;
+  undefined2 uVar11;
+  byte *pbVar12;
+  double *unaff_RBX;
+  undefined *puVar13;
+  undefined8 *puVar14;
+  undefined *puVar15;
+  undefined8 *unaff_RBP;
+  byte in_AF;
+  bool bVar16;
+  byte in_TF;
+  byte in_IF;
+  byte bVar17;
+  bool in_OF;
+  byte in_NT;
+  byte in_AC;
+  byte in_VIF;
+  byte in_VIP;
+  byte in_ID;
+  longdouble in_ST0;
+  ulong unaff_retaddr;
+  double *apdStack_10056 [8184];
+  undefined8 auStack_90 [15];
+  byte *apbStack_18 [3];
+  
+  bVar17 = 0;
+  if (in_OF) {
+    *(uint *)(param_1 + -0x38) = *(uint *)(param_1 + -0x38) >> 0xc;
+    uVar3 = in((short)param_3);
+    *param_1 = uVar3;
+    uVar2 = *(uint *)(param_2 + 4);
+    pbVar12 = (byte *)(ulong)uVar2;
+    uVar6 = param_3 & 0xffffff18;
+    bVar16 = (param_3 & 0x18) == 0;
+    _DAT_231fa97c =
+         (short)ROUND((longdouble)*unaff_RBX -
+                      ((longdouble)*(double *)(param_1 + (long)unaff_RBP * 4 + 0x62) - in_ST0));
+    puVar15 = &stack0x00000008;
+    while (puVar13 = puVar15, bVar16) {
+      *(undefined8 *)(puVar13 + -8) = 0xffffffffffffffa1;
+      uVar11 = (undefined2)uVar2;
+      puVar15 = puVar13 + -8;
+      if (unaff_retaddr != 1) goto LAB_00000103;
+      iVar7 = uVar6 + 0x63d2dd6c;
+      bVar17 = 1;
+      uVar10 = *(uint *)(param_2 + 0x75b6f546) ^ 0xffffffff;
+      unaff_retaddr = (ulong)uVar10;
+      if (-1 < (int)uVar10) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+        halt_baddata();
+      }
+      if (uVar10 == 0) {
+        in(0xca);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+        halt_baddata();
+      }
+      bVar5 = (byte)iVar7 & *pbVar12;
+      uVar6 = CONCAT31((int3)((uint)iVar7 >> 8),bVar5);
+      bVar16 = bVar5 == 0;
+      puVar15 = puVar13 + -8;
+      if ((char)bVar5 >= '\0') {
+        puVar15 = puVar13;
+        if (bVar16) {
+          unaff_RBX = (double *)((ulong)unaff_RBX & 0xffffffff);
+        }
+        else if (!bVar16) {
+          uVar6 = CONCAT22((short)((uint)iVar7 >> 0x10),
+                           CONCAT11(((char)bVar5 < '\0') << 7 | bVar16 << 6 | in_AF << 4 |
+                                    ((POPCOUNT(bVar5) & 1U) == 0) << 2,bVar5)) | 0x200;
+          bVar17 = 1;
+          uVar10 = uVar10 ^ *(uint *)(param_2 + 0x75b6f546);
+          if (-1 < (int)uVar10) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+            halt_baddata();
+          }
+          if (uVar10 == 0) {
+            *(char *)unaff_RBX = *(char *)unaff_RBX + '\x01';
+            *(byte **)(puVar13 + -0x10) = pbVar12;
+            out(uVar11,uVar6 + 0x9c5f1717);
+            piVar9 = (int *)(CONCAT71((int7)((ulong)(puVar13 + -8) >> 8),
+                                      *(char *)((long)unaff_RBX + ((ulong)(puVar13 + -8) & 0xff))) &
+                            0xffffffff);
+            *piVar9 = *piVar9 + (int)unaff_RBX + (uint)(0x63a0e8e8 < uVar6);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+            halt_baddata();
+          }
+          puVar14 = (undefined8 *)(puVar13 + -0x10);
+          *(undefined8 **)(puVar13 + -0x10) = unaff_RBP;
+          cVar4 = '\x10';
+          do {
+            unaff_RBP = unaff_RBP + -1;
+            puVar14 = puVar14 + -1;
+            *puVar14 = *unaff_RBP;
+            cVar4 = cVar4 + -1;
+          } while ('\0' < cVar4);
+          *(undefined **)(puVar13 + -0x98) = puVar13 + -0x10;
+          in_AF = (in_AF << 4 & 0x10) != 0;
+          *(double **)(puVar13 + -0x10056) = unaff_RBX;
+          *(char *)((ulong)uVar10 + 0x67a96a89) = (char)uVar10;
+          if ((ulong)uVar10 == 1) {
+            *(undefined **)(puVar13 + -0x1005e) = (undefined *)(param_2 + 8);
+            pbVar12[0x22222222] = pbVar12[0x22222222] - (char)unaff_RBX;
+            return uVar6 + 0x93e1dd6c;
+          }
+          puVar1 = (uint *)(puVar13 + 0x6368ac99);
+          uVar10 = *puVar1;
+          *puVar1 = *puVar1 - uVar2;
+          *(char *)(param_2 + -0x24) =
+               (*(char *)(param_2 + -0x24) - (char)(uVar6 >> 8)) - (uVar10 < uVar2);
+          uVar3 = in(uVar11);
+          param_1[1] = uVar3;
+          uVar3 = in(uVar11);
+          *param_1 = uVar3;
+          uVar3 = in(uVar11);
+          param_1[-1] = uVar3;
+          uVar3 = in(uVar11);
+          param_1[-2] = uVar3;
+          out(*(undefined *)(param_2 + 8),uVar11);
+          uVar3 = in(uVar11);
+          param_1[-3] = uVar3;
+          uVar3 = in(uVar11);
+          param_1[-4] = uVar3;
+          puVar15 = puVar13 + -0x10056;
+          unaff_RBP = (undefined8 *)(puVar13 + -0x10);
+        }
+LAB_00000103:
+        *(uint *)(puVar15 + 0x6369acef) = *(int *)(puVar15 + 0x6369acef) - uVar2;
+        uVar8 = in(0xab);
+        bVar5 = *(byte *)((long)unaff_RBP + 0x5f939391) & (byte)((uint)uVar8 >> 8);
+        *(ulong *)(puVar15 + -8) =
+             (ulong)(in_NT & 1) * 0x4000 | (ulong)bVar17 * 0x400 | (ulong)(in_IF & 1) * 0x200 |
+             (ulong)(in_TF & 1) * 0x100 | (ulong)((char)bVar5 < '\0') * 0x80 |
+             (ulong)(bVar5 == 0) * 0x40 | (ulong)(in_AF & 1) * 0x10 |
+             (ulong)((POPCOUNT(bVar5) & 1U) == 0) * 4 | (ulong)(in_ID & 1) * 0x200000 |
+             (ulong)(in_VIP & 1) * 0x100000 | (ulong)(in_VIF & 1) * 0x80000 |
+             (ulong)(in_AC & 1) * 0x40000;
+        *(byte **)(puVar15 + -0x10) = pbVar12;
+        out(uVar11,uVar8);
+        piVar9 = (int *)(CONCAT71((int7)((ulong)(puVar15 + -8) >> 8),
+                                  *(char *)((long)unaff_RBX + ((ulong)(puVar15 + -8) & 0xff))) &
+                        0xffffffff);
+        *piVar9 = *piVar9 + (int)unaff_RBX;
+                    /* WARNING: Bad instruction - Truncating control flow here */
+        halt_baddata();
+      }
+    }
+  }
+                    /* WARNING: Bad instruction - Truncating control flow here */
+  halt_baddata();
+}
+
+
+
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Instruction at (ram,0x00000118) overlaps instruction at (ram,0x00000113)
+    */
+/* WARNING: Removing unreachable block (ram,0x00000016) */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+int UndefinedFunction_0000002a(undefined4 *param_1,uint *param_2,byte *param_3,long param_4)
+
+{
+  uint *puVar1;
+  char cVar2;
+  undefined uVar3;
+  byte bVar4;
+  uint uVar5;
+  undefined4 uVar6;
+  undefined8 in_RAX;
+  ulong uVar7;
+  int *piVar8;
+  uint uVar9;
+  long lVar10;
+  undefined2 uVar11;
+  uint uVar12;
+  byte *pbVar13;
+  double *pdVar14;
+  undefined8 *puVar15;
+  undefined8 *puVar16;
+  undefined *puVar17;
+  undefined8 *unaff_RBP;
+  uint *puVar18;
+  undefined4 *puVar19;
+  bool in_PF;
+  byte in_AF;
+  bool bVar20;
+  byte in_TF;
+  byte in_IF;
+  byte bVar21;
+  byte in_NT;
+  byte in_AC;
+  byte in_VIF;
+  byte in_VIP;
+  byte in_ID;
+  longdouble in_ST0;
+  longdouble in_ST3;
+  ulong unaff_retaddr;
+  uint *puStack_10056;
+  double *apdStack_1004e [8183];
+  undefined8 auStack_90 [15];
+  byte *apbStack_18 [3];
+  
+  bVar21 = 0;
+  uVar3 = in(0xad);
+  if (param_4 == 0) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+  uVar12 = (uint)param_3;
+  pdVar14 = (double *)((ulong)param_3 & 0xffffffff);
+  if (!in_PF) {
+    in_ST0 = in_ST3;
+  }
+  uVar7 = CONCAT71((int7)((ulong)in_RAX >> 8),uVar3) ^ 0x89;
+  uVar5 = (uint)param_2;
+  lVar10 = CONCAT71((int7)((ulong)param_4 >> 8),0x70);
+  if ((int)uVar12 <= (int)uVar5) {
+    param_1[-0xe] = (uint)param_1[-0xe] >> 0xc;
+    puVar19 = (undefined4 *)((long)param_1 + 1);
+    uVar3 = in((short)param_3);
+    *(undefined *)param_1 = uVar3;
+    puVar18 = param_2 + 1;
+    register0x00000020 = (BADSPACEBASE *)&stack0x00000008;
+    pbVar13 = (byte *)(ulong)*param_2;
+    uVar5 = uVar12 & 0xffffff18;
+    bVar20 = ((ulong)param_3 & 0x18) == 0;
+    _DAT_231fa97c =
+         (short)ROUND((longdouble)*pdVar14 -
+                      ((longdouble)*(double *)((long)param_1 + (long)unaff_RBP * 4 + 0x62) - in_ST0)
+                     );
+    goto LAB_0000006c;
+  }
+  if (SBORROW4(uVar12,uVar5)) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+  if (lVar10 != 1 && uVar12 == uVar5) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+  lVar10 = lVar10 + -2;
+  pbVar13 = param_3;
+  puVar18 = param_2;
+  puVar19 = param_1;
+  if (lVar10 == 0 || uVar12 == uVar5) {
+    while( true ) {
+      bVar21 = 1;
+      uVar9 = (uint)lVar10 ^ *(uint *)((long)puVar18 + 0x75b6f53e);
+      unaff_retaddr = (ulong)uVar9;
+      if (-1 < (int)uVar9) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+        halt_baddata();
+      }
+      if (uVar9 == 0) break;
+      bVar4 = (byte)uVar7 & *pbVar13;
+      uVar5 = (uint)CONCAT71((int7)(uVar7 >> 8),bVar4);
+      bVar20 = bVar4 == 0;
+      if ((char)bVar4 >= '\0') {
+        if ((bVar20) || (bVar20)) {
+          puVar17 = (undefined *)((long)register0x00000020 + 8);
+        }
+        else {
+          uVar7 = CONCAT62((int6)(uVar7 >> 0x10),
+                           CONCAT11(((char)bVar4 < '\0') << 7 | bVar20 << 6 | in_AF << 4 |
+                                    ((POPCOUNT(bVar4) & 1U) == 0) << 2,bVar4)) | 0x200;
+          bVar21 = 1;
+          uVar9 = uVar9 ^ *(uint *)((long)puVar18 + 0x75b6f53e);
+          if (-1 < (int)uVar9) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+            halt_baddata();
+          }
+          uVar5 = (uint)uVar7;
+          uVar11 = SUB82(pbVar13,0);
+          if (uVar9 == 0) {
+            *(char *)pdVar14 = *(char *)pdVar14 + '\x01';
+            *(byte **)((long)register0x00000020 + -8) = pbVar13;
+            out(uVar11,uVar5 + 0x9c5f1717);
+            piVar8 = (int *)(CONCAT71((int7)((ulong)register0x00000020 >> 8),
+                                      *(char *)((long)pdVar14 + ((ulong)register0x00000020 & 0xff)))
+                            & 0xffffffff);
+            *piVar8 = *piVar8 + uVar12 + (uint)(0x63a0e8e8 < uVar5);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+            halt_baddata();
+          }
+          puVar15 = (undefined8 *)((long)register0x00000020 + -8);
+          *(undefined8 **)((long)register0x00000020 + -8) = unaff_RBP;
+          cVar2 = '\x10';
+          do {
+            unaff_RBP = unaff_RBP + -1;
+            puVar15 = puVar15 + -1;
+            *puVar15 = *unaff_RBP;
+            cVar2 = cVar2 + -1;
+          } while ('\0' < cVar2);
+          *(undefined **)((long)register0x00000020 + -0x90) =
+               (undefined *)((long)register0x00000020 + -8);
+          in_AF = (in_AF << 4 & 0x10) != 0;
+          puVar17 = (undefined *)((long)register0x00000020 + -0x1004e);
+          *(double **)((long)register0x00000020 + -0x1004e) = pdVar14;
+          *(char *)((ulong)uVar9 + 0x67a96a89) = (char)uVar9;
+          if ((ulong)uVar9 == 1) {
+            *(uint **)((long)register0x00000020 + -0x10056) = puVar18;
+            pbVar13[0x22222222] = pbVar13[0x22222222] - (char)pdVar14;
+            return uVar5 + 0x93e1dd6c;
+          }
+          puVar1 = (uint *)((long)register0x00000020 + 0x6368aca1);
+          uVar5 = *puVar1;
+          *puVar1 = *puVar1 - (uint)pbVar13;
+          *(char *)(puVar18 + -0xb) =
+               (*(char *)(puVar18 + -0xb) - (char)(uVar7 >> 8)) - (uVar5 < (uint)pbVar13);
+          uVar3 = in(uVar11);
+          *(undefined *)puVar19 = uVar3;
+          uVar3 = in(uVar11);
+          *(undefined *)((long)puVar19 + -1) = uVar3;
+          uVar3 = in(uVar11);
+          *(undefined *)((long)puVar19 + -2) = uVar3;
+          uVar3 = in(uVar11);
+          *(undefined *)((long)puVar19 + -3) = uVar3;
+          out(*(undefined *)puVar18,uVar11);
+          uVar3 = in(uVar11);
+          *(undefined *)(puVar19 + -1) = uVar3;
+          uVar3 = in(uVar11);
+          *(undefined *)((long)puVar19 + -5) = uVar3;
+          unaff_RBP = (undefined8 *)((long)register0x00000020 + -8);
+        }
+LAB_00000103:
+        *(int *)(puVar17 + 0x6369acef) = *(int *)(puVar17 + 0x6369acef) - (int)pbVar13;
+        uVar6 = in(0xab);
+        bVar4 = *(byte *)((long)unaff_RBP + 0x5f939391) & (byte)((uint)uVar6 >> 8);
+        *(ulong *)(puVar17 + -8) =
+             (ulong)(in_NT & 1) * 0x4000 | (ulong)bVar21 * 0x400 | (ulong)(in_IF & 1) * 0x200 |
+             (ulong)(in_TF & 1) * 0x100 | (ulong)((char)bVar4 < '\0') * 0x80 |
+             (ulong)(bVar4 == 0) * 0x40 | (ulong)(in_AF & 1) * 0x10 |
+             (ulong)((POPCOUNT(bVar4) & 1U) == 0) * 4 | (ulong)(in_ID & 1) * 0x200000 |
+             (ulong)(in_VIP & 1) * 0x100000 | (ulong)(in_VIF & 1) * 0x80000 |
+             (ulong)(in_AC & 1) * 0x40000;
+        *(byte **)(puVar17 + -0x10) = pbVar13;
+        out((short)pbVar13,uVar6);
+        piVar8 = (int *)(CONCAT71((int7)((ulong)(puVar17 + -8) >> 8),
+                                  *(char *)((long)pdVar14 + ((ulong)(puVar17 + -8) & 0xff))) &
+                        0xffffffff);
+        *piVar8 = *piVar8 + uVar12;
+                    /* WARNING: Bad instruction - Truncating control flow here */
+        halt_baddata();
+      }
+LAB_0000006c:
+      if (!bVar20) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+        halt_baddata();
+      }
+      puVar16 = (undefined8 *)((long)register0x00000020 + -8);
+      puVar17 = (undefined *)((long)register0x00000020 + -8);
+      register0x00000020 = (BADSPACEBASE *)((long)register0x00000020 + -8);
+      *puVar16 = 0xffffffffffffffa1;
+      if (unaff_retaddr != 1) goto LAB_00000103;
+      uVar7 = (ulong)(uVar5 + 0x63d2dd6c);
+      lVar10 = -1;
+    }
+  }
+  else {
+    uRam6ada67a96a222220 = (undefined)uVar7;
+    *param_1 = uRame29c2d22942d26e2;
+  }
+  in(0xca);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+  halt_baddata();
+}
+
+
+/* WARNING: Control flow encountered bad instruction data */
+
+void UndefinedFunction_0000001f(undefined *param_1,undefined8 param_2,undefined2 param_3)
+
+{
+  undefined uVar1;
+  
+  uVar1 = in(param_3);
+  *param_1 = uVar1;
+                    /* WARNING: Bad instruction - Truncating control flow here */
+  halt_baddata();
+}
+
+
+
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Instruction at (ram,0x00000118) overlaps instruction at (ram,0x00000113)
+    */
+
+uint UndefinedFunction_0000003f(undefined *param_1,undefined *param_2,byte *param_3,ulong param_4)
+
+{
+  uint *puVar1;
+  undefined uVar2;
+  char cVar3;
+  code *pcVar4;
+  uint uVar5;
+  undefined2 uVar6;
+  byte bVar7;
+  int in_EAX;
+  uint uVar8;
+  uint uVar9;
+  int iVar10;
+  undefined4 uVar11;
+  int *piVar12;
+  ulong uVar13;
+  char *unaff_RBX;
+  undefined8 *puVar14;
+  char **ppcVar15;
+  undefined8 *puVar16;
+  undefined8 *unaff_RBP;
+  undefined8 *puVar17;
+  undefined *puVar18;
+  undefined *puVar19;
+  byte in_AF;
+  bool bVar20;
+  byte in_TF;
+  byte in_IF;
+  byte bVar21;
+  byte in_NT;
+  byte in_AC;
+  byte in_VIF;
+  byte in_VIP;
+  byte in_ID;
+  undefined auStack_8 [8];
+  
+  bVar21 = 0;
+  uVar8 = in_EAX + 0x7171c97b;
+  uVar6 = SUB82(param_3,0);
+  uVar5 = (uint)param_3;
+  puVar17 = unaff_RBP;
+  uVar9 = uVar8;
+  if (SCARRY4(in_EAX,0x7171c97b)) {
+    uVar9 = (uint)(short)uVar8;
+    if ((POPCOUNT(uVar8 & 0xff) & 1U) == 0) {
+      if (SCARRY4(in_EAX,0x7171c97b)) {
+        uVar9 = CONCAT31((int3)(char)(uVar8 >> 8),(char)uVar8) ^ 0x89;
+        uVar13 = CONCAT71((int7)(param_4 >> 8),0x70);
+        if ((int)uVar5 <= (int)param_2) {
+          pcVar4 = (code *)swi(0x10);
+          (*pcVar4)();
+                    /* WARNING: Bad instruction - Truncating control flow here */
+          halt_baddata();
+        }
+        if (SBORROW4(uVar5,(int)param_2)) {
+          return uVar9;
+        }
+LAB_000000d5:
+        *(undefined8 *)((long)register0x00000020 + -8) = 0xffffffffffffffa9;
+        puVar18 = (undefined *)((long)register0x00000020 + -8);
+        if (uVar13 == 1) {
+          iVar10 = uVar9 + 0x63d2dd6c;
+          bVar21 = 1;
+          uVar8 = *(uint *)(param_2 + 0x75b6f53e) ^ 0xffffffff;
+          uVar13 = (ulong)uVar8;
+          if (-1 < (int)uVar8) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+            halt_baddata();
+          }
+          if (uVar8 == 0) {
+            in(0xca);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+            halt_baddata();
+          }
+          bVar7 = (byte)iVar10 & *param_3;
+          uVar9 = CONCAT31((int3)((uint)iVar10 >> 8),bVar7);
+          bVar20 = bVar7 == 0;
+          if ((char)bVar7 < '\0') goto LAB_0000006c;
+          puVar18 = (undefined *)register0x00000020;
+          if (bVar20) {
+            unaff_RBX = (char *)((ulong)unaff_RBX & 0xffffffff);
+          }
+          else if (!bVar20) {
+            uVar9 = CONCAT22((short)((uint)iVar10 >> 0x10),
+                             CONCAT11(((char)bVar7 < '\0') << 7 | bVar20 << 6 | in_AF << 4 |
+                                      ((POPCOUNT(bVar7) & 1U) == 0) << 2,bVar7)) | 0x200;
+            bVar21 = 1;
+            uVar8 = uVar8 ^ *(uint *)(param_2 + 0x75b6f53e);
+            param_4 = (ulong)uVar8;
+            if (-1 < (int)uVar8) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+              halt_baddata();
+            }
+            if (uVar8 == 0) {
+              *unaff_RBX = *unaff_RBX + '\x01';
+              *(byte **)((long)register0x00000020 + -0x10) = param_3;
+              out(uVar6,uVar9 + 0x9c5f1717);
+              piVar12 = (int *)(CONCAT71((int7)((ulong)((long)register0x00000020 + -8) >> 8),
+                                         unaff_RBX[(ulong)((long)register0x00000020 + -8) & 0xff]) &
+                               0xffffffff);
+              *piVar12 = *piVar12 + (int)unaff_RBX + (uint)(0x63a0e8e8 < uVar9);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+              halt_baddata();
+            }
+            puVar14 = (undefined8 *)((long)register0x00000020 + -0x10);
+            puVar17 = (undefined8 *)((long)register0x00000020 + -0x10);
+            *(undefined8 **)((long)register0x00000020 + -0x10) = unaff_RBP;
+            cVar3 = '\x10';
+            do {
+              unaff_RBP = unaff_RBP + -1;
+              puVar14 = puVar14 + -1;
+              *puVar14 = *unaff_RBP;
+              cVar3 = cVar3 + -1;
+            } while ('\0' < cVar3);
+            *(undefined **)((long)register0x00000020 + -0x98) =
+                 (undefined *)((long)register0x00000020 + -0x10);
+            register0x00000020 = (BADSPACEBASE *)((long)register0x00000020 + -0x1004e);
+            goto LAB_000000b7;
+          }
+        }
+        goto LAB_00000103;
+      }
+      register0x00000020 = (BADSPACEBASE *)auStack_8;
+    }
+    else {
+      *(int *)(param_3 + -0x57) = (int)unaff_RBP;
+    }
+  }
+  else {
+LAB_000000b7:
+    in_AF = (uVar9 & 0x1000) != 0;
+    ppcVar15 = (char **)((long)register0x00000020 + -8);
+    register0x00000020 = (BADSPACEBASE *)((long)register0x00000020 + -8);
+    *ppcVar15 = unaff_RBX;
+    *(char *)(param_4 + 0x67a96a89) = (char)param_4;
+    unaff_RBP = puVar17;
+  }
+  if (param_4 == 1) {
+    *(undefined **)((long)register0x00000020 + -8) = param_2;
+    param_3[0x22222222] = param_3[0x22222222] - (char)unaff_RBX;
+    return uVar9 + 0x93e1dd6c;
+  }
+  puVar1 = (uint *)((long)register0x00000020 + 0x6369acef);
+  uVar8 = *puVar1;
+  *puVar1 = *puVar1 - uVar5;
+  param_2[-0x2c] = (param_2[-0x2c] - (char)(uVar9 >> 8)) - (uVar8 < uVar5);
+  puVar18 = param_1 + (ulong)bVar21 * -2 + 1;
+  uVar2 = in(uVar6);
+  *param_1 = uVar2;
+  puVar19 = puVar18 + (ulong)bVar21 * -2 + 1;
+  uVar2 = in(uVar6);
+  *puVar18 = uVar2;
+  puVar18 = puVar19 + (ulong)bVar21 * -2 + 1;
+  uVar2 = in(uVar6);
+  *puVar19 = uVar2;
+  uVar2 = in(uVar6);
+  *puVar18 = uVar2;
+  out(*param_2,uVar6);
+  uVar2 = in(uVar6);
+  puVar18[(ulong)bVar21 * -2 + 1] = uVar2;
+  uVar2 = in(uVar6);
+  (puVar18 + (ulong)bVar21 * -2 + 1)[(ulong)bVar21 * -2 + 1] = uVar2;
+  puVar18 = (undefined *)register0x00000020;
+LAB_00000103:
+  *(uint *)(puVar18 + 0x6369acef) = *(int *)(puVar18 + 0x6369acef) - uVar5;
+  uVar11 = in(0xab);
+  bVar7 = *(byte *)((long)unaff_RBP + 0x5f939391) & (byte)((uint)uVar11 >> 8);
+  *(ulong *)(puVar18 + -8) =
+       (ulong)(in_NT & 1) * 0x4000 | (ulong)bVar21 * 0x400 | (ulong)(in_IF & 1) * 0x200 |
+       (ulong)(in_TF & 1) * 0x100 | (ulong)((char)bVar7 < '\0') * 0x80 | (ulong)(bVar7 == 0) * 0x40
+       | (ulong)(in_AF & 1) * 0x10 | (ulong)((POPCOUNT(bVar7) & 1U) == 0) * 4 |
+       (ulong)(in_ID & 1) * 0x200000 | (ulong)(in_VIP & 1) * 0x100000 |
+       (ulong)(in_VIF & 1) * 0x80000 | (ulong)(in_AC & 1) * 0x40000;
+  *(byte **)(puVar18 + -0x10) = param_3;
+  out(uVar6,uVar11);
+  piVar12 = (int *)(CONCAT71((int7)((ulong)(puVar18 + -8) >> 8),
+                             unaff_RBX[(ulong)(puVar18 + -8) & 0xff]) & 0xffffffff);
+  *piVar12 = *piVar12 + (int)unaff_RBX;
+                    /* WARNING: Bad instruction - Truncating control flow here */
+  halt_baddata();
+LAB_0000006c:
+  if (!bVar20) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+    halt_baddata();
+  }
+  puVar16 = (undefined8 *)((long)register0x00000020 + -0x10);
+  register0x00000020 = (BADSPACEBASE *)((long)register0x00000020 + -0x10);
+  *puVar16 = 0xffffffffffffffa1;
+  goto LAB_000000d5;
+}
+
+
+
+
+/* WARNING: Control flow encountered bad instruction data */
+/* WARNING: Instruction at (ram,0x00000071) overlaps instruction at (ram,0x0000006e)
+    */
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
+int UndefinedFunction_0000005e(undefined *param_1,undefined *param_2,byte *param_3,ulong param_4)
+
+{
+  uint *puVar1;
+  undefined uVar2;
+  char cVar3;
+  undefined2 uVar4;
+  uint uVar5;
+  byte bVar6;
+  int in_EAX;
+  uint uVar7;
+  int iVar8;
+  undefined4 uVar9;
+  int *piVar10;
+  uint uVar11;
+  char *unaff_RBX;
+  undefined *puVar12;
+  undefined8 *puVar13;
+  undefined *puVar14;
+  undefined8 *unaff_RBP;
+  undefined in_CF;
+  byte in_AF;
+  undefined in_ZF;
+  byte in_TF;
+  byte in_IF;
+  byte bVar15;
+  byte in_NT;
+  byte in_AC;
+  byte in_VIF;
+  byte in_VIP;
+  byte in_ID;
+  longdouble in_ST0;
+  char *apcStack_1006e [8184];
+  undefined8 auStack_a8 [17];
+  byte *apbStack_20 [2];
+  undefined auStack_10 [16];
+  
+  bVar15 = 0;
+  _DAT_231fa97c = (short)ROUND(in_ST0);
+  puVar14 = auStack_10;
+  do {
+    puVar12 = puVar14;
+    if (!(bool)in_CF && !(bool)in_ZF) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+      halt_baddata();
+    }
+    *(undefined8 *)(puVar12 + -8) = 0xffffffffffffffa1;
+    uVar4 = SUB82(param_3,0);
+    uVar5 = (uint)param_3;
+    puVar14 = puVar12 + -8;
+    if (param_4 != 1) goto LAB_00000103;
+    iVar8 = in_EAX + 0x63d2dd6c;
+    bVar15 = 1;
+    uVar11 = *(uint *)(param_2 + 0x75b6f53e) ^ 0xffffffff;
+    param_4 = (ulong)uVar11;
+    if (-1 < (int)uVar11) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+      halt_baddata();
+    }
+    if (uVar11 == 0) {
+      in(0xca);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+      halt_baddata();
+    }
+    in_CF = false;
+    bVar6 = (byte)iVar8 & *param_3;
+    in_EAX = CONCAT31((int3)((uint)iVar8 >> 8),bVar6);
+    in_ZF = bVar6 == 0;
+    puVar14 = puVar12 + -8;
+  } while ((char)bVar6 < '\0');
+  puVar14 = puVar12;
+  if ((bool)in_ZF) {
+    unaff_RBX = (char *)((ulong)unaff_RBX & 0xffffffff);
+  }
+  else if (!(bool)in_ZF) {
+    uVar7 = CONCAT22((short)((uint)iVar8 >> 0x10),
+                     CONCAT11(((char)bVar6 < '\0') << 7 | in_ZF << 6 | in_AF << 4 |
+                              ((POPCOUNT(bVar6) & 1U) == 0) << 2,bVar6)) | 0x200;
+    bVar15 = 1;
+    uVar11 = uVar11 ^ *(uint *)(param_2 + 0x75b6f53e);
+    if (-1 < (int)uVar11) {
+                    /* WARNING: Bad instruction - Truncating control flow here */
+      halt_baddata();
+    }
+    if (uVar11 == 0) {
+      *unaff_RBX = *unaff_RBX + '\x01';
+      *(byte **)(puVar12 + -0x10) = param_3;
+      out(uVar4,uVar7 + 0x9c5f1717);
+      piVar10 = (int *)(CONCAT71((int7)((ulong)(puVar12 + -8) >> 8),
+                                 unaff_RBX[(ulong)(puVar12 + -8) & 0xff]) & 0xffffffff);
+      *piVar10 = *piVar10 + (int)unaff_RBX + (uint)(0x63a0e8e8 < uVar7);
+                    /* WARNING: Bad instruction - Truncating control flow here */
+      halt_baddata();
+    }
+    puVar13 = (undefined8 *)(puVar12 + -0x10);
+    *(undefined8 **)(puVar12 + -0x10) = unaff_RBP;
+    cVar3 = '\x10';
+    do {
+      unaff_RBP = unaff_RBP + -1;
+      puVar13 = puVar13 + -1;
+      *puVar13 = *unaff_RBP;
+      cVar3 = cVar3 + -1;
+    } while ('\0' < cVar3);
+    *(undefined **)(puVar12 + -0x98) = puVar12 + -0x10;
+    in_AF = (in_AF << 4 & 0x10) != 0;
+    *(char **)(puVar12 + -0x10056) = unaff_RBX;
+    *(char *)((ulong)uVar11 + 0x67a96a89) = (char)uVar11;
+    if ((ulong)uVar11 == 1) {
+      *(undefined **)(puVar12 + -0x1005e) = param_2;
+      param_3[0x22222222] = param_3[0x22222222] - (char)unaff_RBX;
+      return uVar7 + 0x93e1dd6c;
+    }
+    puVar1 = (uint *)(puVar12 + 0x6368ac99);
+    uVar11 = *puVar1;
+    *puVar1 = *puVar1 - uVar5;
+    param_2[-0x2c] = (param_2[-0x2c] - (char)(uVar7 >> 8)) - (uVar11 < uVar5);
+    uVar2 = in(uVar4);
+    *param_1 = uVar2;
+    uVar2 = in(uVar4);
+    param_1[-1] = uVar2;
+    uVar2 = in(uVar4);
+    param_1[-2] = uVar2;
+    uVar2 = in(uVar4);
+    param_1[-3] = uVar2;
+    out(*param_2,uVar4);
+    uVar2 = in(uVar4);
+    param_1[-4] = uVar2;
+    uVar2 = in(uVar4);
+    param_1[-5] = uVar2;
+    puVar14 = puVar12 + -0x10056;
+    unaff_RBP = (undefined8 *)(puVar12 + -0x10);
+  }
+LAB_00000103:
+  *(uint *)(puVar14 + 0x6369acef) = *(int *)(puVar14 + 0x6369acef) - uVar5;
+  uVar9 = in(0xab);
+  bVar6 = *(byte *)((long)unaff_RBP + 0x5f939391) & (byte)((uint)uVar9 >> 8);
+  *(ulong *)(puVar14 + -8) =
+       (ulong)(in_NT & 1) * 0x4000 | (ulong)bVar15 * 0x400 | (ulong)(in_IF & 1) * 0x200 |
+       (ulong)(in_TF & 1) * 0x100 | (ulong)((char)bVar6 < '\0') * 0x80 | (ulong)(bVar6 == 0) * 0x40
+       | (ulong)(in_AF & 1) * 0x10 | (ulong)((POPCOUNT(bVar6) & 1U) == 0) * 4 |
+       (ulong)(in_ID & 1) * 0x200000 | (ulong)(in_VIP & 1) * 0x100000 |
+       (ulong)(in_VIF & 1) * 0x80000 | (ulong)(in_AC & 1) * 0x40000;
+  *(byte **)(puVar14 + -0x10) = param_3;
+  out(uVar4,uVar9);
+  piVar10 = (int *)(CONCAT71((int7)((ulong)(puVar14 + -8) >> 8),
+                             unaff_RBX[(ulong)(puVar14 + -8) & 0xff]) & 0xffffffff);
+  *piVar10 = *piVar10 + (int)unaff_RBX;
+                    /* WARNING: Bad instruction - Truncating control flow here */
+  halt_baddata();
+}
+

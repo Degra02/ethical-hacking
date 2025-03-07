@@ -1,0 +1,8 @@
+run
+^C
+info proc mappings
+set $base = 0x0000555555554000
+readelf -S ./bin | grep mysec   # get offset
+set $mysec = $base + <mysec offset>
+watch *(int*)$mysec
+continue

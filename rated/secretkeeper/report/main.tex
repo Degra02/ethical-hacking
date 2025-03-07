@@ -1,0 +1,109 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                DO NOT EDIT                                    %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper, 11pt]{article}
+\usepackage[top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\geometry{a4paper}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+\usepackage{graphicx}
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+\usepackage[pdftex,bookmarks,colorlinks,breaklinks]{hyperref}
+\usepackage{memhfixc}
+\usepackage{pdfsync}
+\usepackage{fancyhdr}
+\usepackage{listings}
+\usepackage{xcolor}
+
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+\lstdefinestyle{codestyle}{
+    backgroundcolor=\color{backcolour},
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbers=left,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    tabsize=2
+}
+\lstset{style=codestyle}
+\pagestyle{fancy}
+\pagenumbering{gobble}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% DO NOT EDIT the structure of the document and stick to the provided template!
+% The report must be in English and PDF format. Do not send files other than the report.
+% It must be at most 1 page long, not counting images, code and references.
+% Images and code should be included in the report only if they add useful information.
+% A person reading the report should be able to understand the vulnerability and exploit it without looking for further information.
+
+\title{Doubted Secretkeeper}
+\author{Filippo De Grandi}
+\date{07/04/2025}
+
+\makeatletter
+\lhead{\@author,\space\@date}
+\rhead{\@title}
+\lfoot{Ethical Hacking 2024/25}
+\rfoot{University of Trento}
+
+\begin{document}
+
+\section*{Background}
+% Briefly introduce the background on the challenge topic. Describe the class of the vulnerability that affects the target system, why it happens, and its consequences. You might also describe how the vulnerability can be prevented. In this section, you should not describe the challenge details.
+% The background section should be well referenced \cite{bibtex}.
+Modern cryptographic systems rely on mathematical principles to safeguard sensitive data. Public key cryptography, and in particular RSA  \cite{rsa}, is widely used because it provides a means to securely encrypt and decrypt messages using separate keys for public sharing and private decryption. However, this widely system contains certain properties that can lead to vulnerabilities.
+
+One property is \textbf{multiplicativity}. In its basic form, RSA encryption is defined as $c = m^{e} ~ mod ~ n$. Due to the multiplicative nature of exponentiation modulo n, the encryption function has the homomorphic property such that for any two plaintexts $m_1$ and $m_2$, the product of their encryptions is: $E(m_1)*E(m_2) \equiv (m_1×m_2)^e ~ mod ~ n$.
+
+This makes the system vulnerable to multiplicative attacks if the protocol is not protected with appropriate countermeasures such as padding schemes (e.g. OAEP \cite{oaep}) or additional integrity checks.
+
+Integrity protection is a critical aspect of cryptographic protocols because even if an encryption scheme is mathematically strong, it remains vulnerable if the ciphertexts can be modified without detection. In many systems, integrity is maintained through the use of Message Authentication Codes \cite{mac} or authenticated encryption modes such as AES-GCM \cite{gcm}. These ensure that any modifications to the ciphertext or associated data will be detectable at decryption \cite{message_integrity}.
+
+However, when integrity checks are implemented using hash-based methods, there are several problems. For example, bcrypt \cite{bcrypt} processes only the first 72 bytes of input. If integrity tokens are constructed by concatenating various fields and then hashed with bcrypt, an attacker can exploit this truncation. Any data beyond that limit will be ignored in the resulting hash.
+
+The design of integrity checks must consider the limitations of the hash functions in use. Failure to account for these pitfalls can open the door to attacks that compromise both the confidentiality and the integrity of the system.
+
+
+\section*{Vulnerability}
+% Briefly describe the specific instance of the vulnerability that affects the target system.
+The vulnerability in the first challenge relies on the decryption oracle that the program performs, enabling for a Chosen Ciphertext Attack (CCA) using this oracle and RSA malleability.
+The second version is basically the same as the first, with the added integrity through hash that can be bypassed by exploiting bcrypt's limitations.
+
+
+\section*{Solution}
+% Describe the solution of the challenge and the exploit.
+% You can include snippets of code, such as in Listing \ref{lst:example}
+The exploit is executed in two main stages
+\paragraph{Recovering RSA Modulus n}\label{par:Recovering RSA Modulus n} % (fold)
+By sending known plaintexts (e.g. single characters) to obtain the ciphertexts, the value $r_i = p^e - c_i$ can be computed, which is a multiple of \texttt{n}. Taking the \textit{gcd} between multiple of these values obtained with different plaintexts, \texttt{n} can be recovered.
+% paragraph Recovering RSA Modulus n (end)
+
+\paragraph{Multiplicative Attack}\label{par:Multiplicative Attack} % (fold)
+Once \texttt{n} is known, a small multiplier is chosen and its encryption computed. Then, the ciphertext of the flag gets modified: $c^{'} = (c_{flag} * s^e) ~ mod ~ n$.
+When the server decrypts $c^{'}$, it yields $s * FLAG$, from which the flag can be obtained by dividing this result by $s$.
+
+For the second version of the challenge, the integrity check is performed via a hash using bycrypt, that can be bypassed via bycrypt's truncation at 72 bytes.
+By providing a name of exactly 72 bytes during both the encryption (protect) and decryption (show) operations, only this exact name is hashed, regardless of any changes in the appended ciphertext. This allows the modified ciphertext to pass the integrity check and be successfully decrypted.
+% paragraph Multiplicative Attack (end)
+\newpage
+
+
+\lstinputlisting[language=python,label=lst:solution,caption=Solution code, label=lst:sol]{solution.py}
+
+\bibliographystyle{abbrv}
+\bibliography{references}  % need to put bibtex references in references.bib
+\end{document}
